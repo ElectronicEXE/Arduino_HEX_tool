@@ -1,7 +1,7 @@
 @echo off
-echo          ############################################################
-echo          ###  CODE BY @Electronic_EXE  aka  Furdui Bogdan Andrei  ###
-echo          ############################################################
+echo ############################################################
+echo ###  CODE BY @Electronic_EXE  aka  Furdui Bogdan Andrei  ###
+echo ############################################################
 echo.
 echo version: 3.0
 echo.
@@ -11,7 +11,7 @@ echo ###########################################################################
 echo.
 echo.
 echo.
-echo _____________________avrdude memory reader/writer/verifyer for arduino________________
+echo _____________________avrdude memory reader/writer/verifier for Arduino________________
 echo.
 echo.
 echo.
@@ -19,15 +19,15 @@ pause
 
 setlocal enabledelayedexpansion
 set count=0
-set folders=normal-upload/download/veryfing arduino-as-isp 
+set folders=normal-upload/download/verifying arduino-as-isp 
 
-for %%0 in (%folders%) do (
+for %%i in (%folders%) do (
     set /a count=count+1
-    set choice[!count!]=%%0
+    set choice[!count!]=%%i
 )
 
 echo.
-echo select upload/download/veryfing type:
+echo select upload/download/verifying type:
 echo.
 
 for /l %%x in (1,1,!count!) do (
@@ -42,20 +42,20 @@ echo You chose !choice[%chose%]!
 set folder=!choice[%chose%]!
 
 if %chose% == 1 (
-set cvar=-c arduino
-set bvar=
+    set cvar=-c arduino
+    set bvar=
 ) 
 
 if %chose% == 2 (
-set cvar=-c avrisp
-set bvar=-b 19200
+    set cvar=-c avrisp
+    set bvar=-b 19200
 ) 
 
 echo _______________________________com port list_________________________________
 echo #############################################################################
 setlocal enabledelayedexpansion 
 echo.
-for /f "tokens=2delims=COM:" %%i in ('mode ^| findstr /RC:"\C\O\M[0-9*]"') do set "_com=%%i" & echo/ COM!_com! 
+for /f "tokens=2 delims=COM:" %%i in ('mode ^| findstr /RC:"\C\O\M[0-9*]"') do set "_com=%%i" & echo/ COM!_com! 
 echo.
 echo.
 echo.
@@ -74,9 +74,9 @@ echo.
 set count1=0
 set foldersss=atmega328p/ARDUINO_UNO/NANO m2560/ARDUINO_MEGA else
 
-for %%0 in (%foldersss%) do (
+for %%i in (%foldersss%) do (
     set /a count1=count1+1
-    set choiceee[!count1!]=%%0
+    set choiceee[!count1!]=%%i
 )
 
 echo.
@@ -96,13 +96,13 @@ set folderrr=!choiceee[%choseee%]!
 
 echo.
 echo.
-echo selected microcontroller architecture : %choseee%
+echo selected microcontroller architecture: %choseee%
 if %choseee% == 1 (
-set chip=atmega328p
+    set chip=atmega328p
 )
 
 if %choseee% == 2 (
-set chip=m2560
+    set chip=m2560
 )
 
 if %choseee% == 3 (
@@ -111,7 +111,7 @@ if %choseee% == 3 (
     echo Please write the name of the microcontroller for avrdude to use.
     echo #-----------------------------------------------------------------------------------------#
     echo If not known, continue with atmega328p. If it is not correct, avrdude will throw an error 
-    echo and attempt to auto detect the chip and print it to the terminal. 
+    echo and attempt to auto-detect the chip and print it to the terminal. 
     echo Write the chip down and run the program again and set the right chip.
     echo #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
     echo.
@@ -131,9 +131,9 @@ echo.
 set count1=0
 set foldersss=FLASH/Normal_Sketch_Memory EEPROM/non-volatile/electrically_erasable_programmable_read-only_memory
 
-for %%0 in (%foldersss%) do (
+for %%i in (%foldersss%) do (
     set /a count1=count1+1
-    set choiceee[!count1!]=%%0
+    set choiceee[!count1!]=%%i
 )
 
 echo.
@@ -151,11 +151,11 @@ echo.
 echo You chose !choiceee[%choseee%]!
 set folderrr=!choiceee[%choseee%]!
 if %choseee% == 1 (
-set mode=flash
+    set mode=flash
 )
 
 if %choseee% == 2 (
-set mode=eeprom
+    set mode=eeprom
 )
 echo.
 echo.
@@ -165,6 +165,7 @@ echo.
 echo ______________________________set file name for .hex file___________________
 echo ##############################################################################
 echo.
+echo Please place your writing binaries on Desktop if you want to flash them.
 set /p input2=
 echo.
 echo file name for .hex file is: %input2%
@@ -176,9 +177,9 @@ setlocal enabledelayedexpansion
 set count=0
 set folderss=write read verify
 
-for %%0 in (%folderss%) do (
+for %%i in (%folderss%) do (
     set /a count=count+1
-    set choicee[!count!]=%%0
+    set choicee[!count!]=%%i
 )
 
 echo.
@@ -198,37 +199,40 @@ set folderr=!choicee[%chosee%]!
 
 echo.
 echo.
-echo selected mode is : %chosee%
+echo selected mode is: %chosee%
 
 if %chosee% == 3 (
-set input3=v
+    set input3=v
 )
 
 if %chosee% == 2 (
-set input3=r
+    set input3=r
 )
 
 if %chosee% == 1 (
-set input3=w
+    set input3=w
+    xcopy %USERPROFILE%\Desktop\%input2%.hex %~dp0
 )
 echo ##############################################################################
 echo.
-echo comand to be executed:
+echo command to be executed:
 echo avrdude -p %chip% %cvar% %bvar% -P %input% -U %mode%:%input3%:%input2%.hex:i
 echo.
 echo.
 pause
 avrdude -p %chip% %cvar% %bvar% -P %input% -U %mode%:%input3%:%input2%.hex:i
+xcopy %input2%.hex %USERPROFILE%\Desktop
 echo.
 echo.
 echo.
 echo ###############################################################################
 echo.
 echo.
+echo File saved on Desktop.
 echo.
 echo.
 echo.
 echo @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-echo                              OPERATION COMPLETEED
+echo                              OPERATION COMPLETED
 echo @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-pause 
+pause
